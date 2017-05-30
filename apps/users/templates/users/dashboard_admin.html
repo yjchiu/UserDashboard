@@ -1,0 +1,71 @@
+<!DOCTYPE hyml>
+
+
+<html lang="en">
+    <head>
+        <title>Admin Dashboard</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">User Dashboard</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+          <li><a href="#"></a></li>
+        <li class="active"><a href="/dashboard/admin">Dashboard <span class="sr-only">(current)</span></a></li>
+        <li><a href="/users/edit">Profile</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/logoff">Log off</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+        <div class="container">
+            <div class="row">
+                <h1>Manage Users</h1>
+                <a class="btn btn-primary pull-right" href="/users/new" role="button">Add new</a>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>email</th> 
+                        <th>created_at</th>
+                        <th>user_level</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td><a href="/users/show/{{ user.id }}">{{ user.first_name }}</a></td> 
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.created_at }}</td>
+                            <td>
+                                {% if user.user_level == 9%}
+                                admim
+                                {% else %}
+                                normal
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a class="btn btn-default" href="/users/edit/{{ user.id }}">Edit</a>
+                                <a class="btn btn-default" data-toggle= "popover" data-title="Are you sure?" href="/users/destroy/{{ user.id }}" >Remove</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

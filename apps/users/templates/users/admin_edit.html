@@ -1,0 +1,94 @@
+<!DOCTYPE hyml>
+
+
+<html lang="en">
+    <head>
+        <title>All Products</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <style>
+    /*#container_1, #container_2{
+        width: 400px;
+        display: inline-block;
+        vertical-align: top;
+    }*/
+    </style>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>-->
+                <a class="navbar-brand" href="#">User Dashboard</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="#"></a></li>
+                    <li><a href="/dashboard/admin">Dashboard <span class="sr-only">(current)</span></a></li>
+                    <li><a href="/users/edit">Profile</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/logoff">Log off</a></li>
+                </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        <div class="container">
+            <div class="row">
+                <h1>Edit user #{{ user.id }}</h1>
+                <a class="btn btn-primary pull-right" href="/dashboard/admin" role="button">Return to Dashboard</a>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-md-offset-2">
+                    <h3>Edit Information</h3>
+                    <form action="/update_info/{{ user.id }}" method="post">
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <label for="email">Email Address:</label>
+                            <input type="text" class="form-control" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" class="form-control" name="first_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" class="form-control" name="last_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="user_level">User Level</label>
+                            <select class="form-control" name="user_level">
+                                <option value=""></option>
+                                <option value="normal">Normal</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-default pull-right">Save</button>
+                    </form>
+                </div>
+                <div class="col-md-3 col-md-offset-1">
+                    <h3>Change Password</h3>
+                    <form action="/update_pwd/{{ user.id }}" method="post">
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <label for="ped">Password</label>
+                            <input type="password" class="form-control" name="pwd">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Password Confirmation</label>
+                            <input type="password" class="form-control" name="confirm_pwd">
+                        </div>
+                        <button type="submit" class="btn btn-default pull-right">Update Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

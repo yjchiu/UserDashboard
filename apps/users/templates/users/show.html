@@ -1,0 +1,99 @@
+<!DOCTYPE hyml>
+
+
+<html lang="en">
+    <head>
+        <title>Admin Dashboard</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <style>
+         .panel-body  {
+            word-wrap: break-word;
+        }
+    </style>
+
+    <body>
+        <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">User Dashboard</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#"></a></li>
+        {% if active_user.user_level == 9 %}
+        <li class="active"><a href="/dashboard/admin">Dashboard <span class="sr-only">(current)</span></a></li>
+        {% else %}
+        <li class="active"><a href="/dashboard">Dashboard <span class="sr-only">(current)</span></a></li>
+        {% endif %}
+        <li><a href="/users/edit">Profile</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/logoff">Log off</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+        <div class="container">
+            <h3>{{ user.first_name }} {{user.last_name }}</h3>
+            <div class="row">
+                <div class="col-md-2"><h5>Registered at:</h5></div>
+                <div class="col-md-2"><h5>{{ user.created_at }}</h5></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h5>User ID:</h5></div>
+                <div class="col-md-2"><h5>#{{ user.id }}</h5></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h5>Email address:</h5></div>
+                <div class="col-md-2"><h5>{{ user.email }}</h5></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><h5>Description:</h5></div>
+                <div class="col-md-2"><h5>{{ user.description.first.content }}</h5></div>
+            </div>
+            <div class="row">
+                <h4>Leave a message for {{ user.first_name }}</h4>
+                <form action="/message_process/{{ user.id }}/{{ request.session.id }}" method="post" style="height:200px">
+                {% csrf_token %}
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" name="content"></textarea>
+                    </div>
+                    <button type="submit" class="col-md-1 col-md-offset-11 btn btn-primary button_margin">Post</button>
+                </form>
+            </div>
+            {% for message in messages %}
+            <div class="row">
+                <h5><a href="/users/show/{{ message.from_user.id }}">{{ message.from_user.first_name }} {{message.from_user.last_name }}</a> wrote ({{ message.created_at | timesince }} ago)</span></h5>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{ message.content }}
+                    </div>
+                </div>
+                {% for comment in message.message_comments.all %}
+                <div class="row">
+                    <h5 class="col-md-11 col-md-offset-1"><a href="/users/show/{{ comment.user.id }}">{{ comment.user.first_name }} {{ comment.user.last_name }}</a> wrote ({{ comment.created_at | timesince }} ago)</span></h5>
+                    <div class="col-md-11 col-md-offset-1 panel panel-default">
+                        <div class="panel-body">
+                            {{ comment.content }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="row">
+                    <form class="col-md-11 col-md-offset-1" action="/comment_process/{{ message.id }}/{{ user.id }}/{{ request.session.id }}" method="post" style="height:200px">
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <textarea class="form-control" rows="5" name="content"></textarea>
+                        </div>
+                        <button type="submit" class="col-md-1 col-md-offset-11 btn btn-primary button_margin">Post</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>
