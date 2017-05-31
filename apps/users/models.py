@@ -32,17 +32,17 @@ class UserManager(models.Manager):
         if not EMAIL_REGEX.match(postData['email']):
             return {'error' : 'Invalid Format'}
 
-        user = User.objects.get(email = postData['email'])
+        user = User.objects.filter(email = postData['email'])
         if not user:
             return {'error' : 'user does not exist.'}
         else:
-            stored_hash = user.password
+            stored_hash = user[0].password
             input_hash = bcrypt.hashpw(postData['pwd'].encode(), stored_hash.encode())
             if not input_hash == stored_hash:
                 return {'error' : 'Wrong password'}
             else:
                 print "Success"
-                return {'theUser' : user }
+                return {'theUser' : user[0] }
     
 class MessageManager(models.Manager):
     def create_new_msg_with_valid(self,postData):

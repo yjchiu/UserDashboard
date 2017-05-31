@@ -58,7 +58,7 @@ def login_process(request):
 
     if 'error' in user:
         messages.warning(request, user['error'])
-        return redirect('/')
+        return redirect('/login')
     
     if 'theUser' in user:
         request.session['id'] = user['theUser'].id
